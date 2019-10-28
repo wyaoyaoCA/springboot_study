@@ -14,6 +14,7 @@
         <module>03-springboot-logging</module>
         <module>04-springboot-jdbc</module>
         <module>05-springboot-mybatis</module>
+        <module>06-springboot-rocketmq</module>
     </modules>
 
     <parent>
