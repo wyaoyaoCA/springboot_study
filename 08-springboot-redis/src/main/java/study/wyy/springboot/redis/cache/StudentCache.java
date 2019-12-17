@@ -17,7 +17,7 @@ public class StudentCache {
 
     private final RedisTemplate<String, Student> studentRedisTemplate;
 
-    private final String KEY = "study:wyy:redis:study";
+    private final String KEY = "study:wyy:redis:student";
 
     public void saveStudent(Student student){
         studentRedisTemplate.opsForValue().set(KEY,student);

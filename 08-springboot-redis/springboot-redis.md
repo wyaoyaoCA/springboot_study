@@ -94,3 +94,78 @@ public class StringRedisTemplate extends RedisTemplate<String, String> {
 
 ##### 配置一个RedisTemplate<String,Student>
 - study.wyy.springboot.redis.model.Student 是自定义的实体类，redis缓存该对象的信息
+
+- study.wyy.springboot.redis.config.RedisConfig 配置一个RedisTemplate<String,Student>
+
+```java
+package study.wyy.springboot.redis.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import study.wyy.springboot.redis.model.Student;
+
+/**
+ * @author wyaoyao
+ * @data 2019-12-09 10:04
+ */
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public RedisTemplate<String, Student> studentRedisTemplate(RedisConnectionFactory redisConnectionFactory){
+        RedisTemplate<String, Student> redisTemplate = new RedisTemplate();
+        // key的缓存方式
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        // 设置value的序列化方式
+        redisTemplate.setValueSerializer(RedisSerializer.json());
+        redisTemplate.setHashValueSerializer(RedisSerializer.json());
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        return redisTemplate;
+
+    }
+}
+```
+
+### 3 RedisTemplate方法演示
+
+spring中根据redis的数据类型提供了以下几个接口，这几个接口的是实现也都在RedisTemplate中引入了
+
+- private ValueOperations<K, V> valueOps;
+- private ListOperations<K, V> listOps;
+- private SetOperations<K, V> setOps;
+- private ZSetOperations<K, V> zSetOps;
+
+> 这几个接口的是实现也都在RedisTemplate中引入了
+
+```java
+	private final ValueOperations<K, V> valueOps = new DefaultValueOperations<>(this);
+	private final ListOperations<K, V> listOps = new DefaultListOperations<>(this);
+	private final SetOperations<K, V> setOps = new DefaultSetOperations<>(this);
+	private final StreamOperations<K, ?, ?> streamOps = new DefaultStreamOperations<>(this, new ObjectHashMapper());
+	private final ZSetOperations<K, V> zSetOps = new DefaultZSetOperations<>(this);
+	private final GeoOperations<K, V> geoOps = new DefaultGeoOperations<>(this);
+	private final HyperLogLogOperations<K, V> hllOps = new DefaultHyperLogLogOperations<>(this);
+	private final ClusterOperations<K, V> clusterOps = new DefaultClusterOperations<>(this);
+```
+
+#### 3.1 String类型
+
+在RedisTemplate中，已经提供了一个工厂方法:opsForValue()。这个方法会返回这个默认的操作类
+
+主要的api：
+- redisTemplate.opsForValue().set(String key,String value)
+- String s = redisTemplate.opsForValue().get(String key);
+- String oldValue = redisTemplate.opsForValue().getAndSet(String key, String new value);
+- redisTemplate.opsForValue().set(K key, V value, long timeout, TimeUnit unit);
+
+测试代码：`study/wyy/springboot/redis/RedisTemplateTest.java`
+
+#### 3.2 哈希类型相关操作
+
+
+
+
