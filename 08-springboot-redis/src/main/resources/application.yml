@@ -1,4 +1,41 @@
+
+
+
 spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/security
+    username: root
+    password: rootroot
   redis:
     port: 6379
-    password:
+    password: wyy123
+
+mybatis:
+  mapper-locations: classpath:mapper/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: study.wyy.springboot.redis.pojo
+
+jetcache:
+  statIntervalMinutes: 30  #统计间隔，0代表不统计
+  areaInCacheName: false   #是否把areaName作为cacheName的前缀，默认为true，建议为false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 100
+      expireAfterWriteInMillis: 3600000 #3600秒, 60分钟
+  remote:
+    default:
+      type: redis
+      keyConvertor: fastjson
+      limit: 1000
+      expireAfterWriteInMillis: 3600000 #3600秒, 60分钟
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:wyy123}
+
+logging:
+  level:
+    main.blog.mapper: debug

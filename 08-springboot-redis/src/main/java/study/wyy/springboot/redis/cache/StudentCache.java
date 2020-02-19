@@ -31,7 +31,7 @@ public class StudentCache {
     }
 
     public void del(){
-        Boolean delete = studentRedisTemplate.delete(KEY);
+        studentRedisTemplate.delete(KEY);
         log.info("删除缓存");
     }
 

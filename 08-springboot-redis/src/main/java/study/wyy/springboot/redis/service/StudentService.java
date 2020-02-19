@@ -1,6 +1,5 @@
 package study.wyy.springboot.redis.service;
 
-import com.sun.org.apache.xerces.internal.impl.xs.util.ShortListImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
