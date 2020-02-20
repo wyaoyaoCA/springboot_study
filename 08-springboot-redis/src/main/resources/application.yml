@@ -5,7 +5,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/security
     username: root
-    password: rootroot
+    password: 123456
+    #password: rootroot
   redis:
     port: 6379
     password: wyy123

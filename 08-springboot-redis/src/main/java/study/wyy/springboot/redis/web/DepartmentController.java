@@ -6,11 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import study.wyy.springboot.redis.cache.StudentCache;
-import study.wyy.springboot.redis.model.Student;
 import study.wyy.springboot.redis.pojo.Department;
 import study.wyy.springboot.redis.service.DepartmentService;
-import study.wyy.springboot.redis.service.StudentService;
 
 /**
  * @author wyaoyao
@@ -48,7 +45,7 @@ public class DepartmentController {
     public void editDepartment(){
 
         Department department = new Department();
-        department.setDepartmentName("测试部");
+        department.setDepartmentName("PD");
         department.setId(1);
         departmentService.updateById(department);
     }

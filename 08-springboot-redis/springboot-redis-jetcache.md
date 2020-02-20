@@ -67,6 +67,6 @@ jetcache:
 ### 核心注解
 
 > 为了演示效果，配置mybatis，沿用05-springboot-mybatis模块
-#### @CreateCache
 
-在Spring bean中使用@CreateCache注解创建一个Cache实例,默认超时时间是100秒
+
+#### 
