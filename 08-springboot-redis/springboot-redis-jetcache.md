@@ -64,9 +64,63 @@ jetcache:
 - `@EnableMethodCache(basePackages = "com.company.mypackage")`
 
 
-### 核心注解
+### 方法缓存注解
 
 > 为了演示效果，配置mybatis，沿用05-springboot-mybatis模块
 
+`study.wyy.springboot.redis.service.DepartmentService`
 
-#### 
+详细配置可参考[官方文档](https://github.com/alibaba/jetcache/wiki/MethodCache_CN)
+
+
+
+### 高级缓存API
+
+#### CacheBuilder
+CacheBuilder提供使用代码直接构造Cache实例的方式，使用说明看这里。
+**如果没有使用Spring，可以使用CacheBuilder，否则没有必要直接使用CacheBuilder。**
+
+#### Builder
+**JetCache2版本的@Cached和@CreateCache等注解都是基于Spring4.X版本实现的，**在没有Spring支持的情况下，注解将不能使用。
+但是可以直接使用JetCache的API来创建、管理、监控Cache，多级缓存也可以使用。
+
+#### 创建缓存
+创建缓存的操作类似guava/caffeine cache，例如下面的代码创建基于内存的LinkedHashMapCache：
+```java
+Cache<String, Integer> cache = LinkedHashMapCacheBuilder.createLinkedHashMapCacheBuilder()
+                .limit(100)
+                .expireAfterWrite(200, TimeUnit.SECONDS)
+                .buildCache();
+```
+
+创建RedisCache：
+
+```java
+GenericObjectPoolConfig pc = new GenericObjectPoolConfig();
+        pc.setMinIdle(2);
+        pc.setMaxIdle(10);
+        pc.setMaxTotal(10);
+        JedisPool pool = new JedisPool(pc, "localhost", 6379);
+Cache<Long, OrderDO> orderCache = RedisCacheBuilder.createRedisCacheBuilder()
+                .keyConvertor(FastjsonKeyConvertor.INSTANCE)
+                .valueEncoder(JavaValueEncoder.INSTANCE)
+                .valueDecoder(JavaValueDecoder.INSTANCE)
+                .jedisPool(pool)
+                .keyPrefix("orderCache")
+                .expireAfterWrite(200, TimeUnit.SECONDS)
+                .buildCache();
+```
+#### 多级缓存
+
+在2.2以后通过下面的方式创建多级缓存：
+
+Cache multiLevelCache = MultiLevelCacheBuilder.createMultiLevelCacheBuilder()
+      .addCache(memoryCache, redisCache)
+      .expireAfterWrite(100, TimeUnit.SECONDS)
+      .buildCache();
+      
+实际上，使用MultiLevelCache可以创建多级缓存，它的构造函数接收的是一个Cache数组（可变参数）。
+Cache memoryCache = ...
+Cache redisCache = ...
+Cache multiLevelCache = new MultiLevelCache(memoryCache, redisCache);
+
