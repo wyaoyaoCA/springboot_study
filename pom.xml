@@ -17,6 +17,7 @@
         <module>06-springboot-rocketmq</module>
         <module>07-springboot-dubbo</module>
         <module>08-springboot-redis</module>
+        <module>09-springboot-retry</module>
     </modules>
 
     <parent>
