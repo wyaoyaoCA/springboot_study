@@ -1,0 +1,4 @@
+#context:
+#  initializer:
+#    classes: study.wy.spring.extend.MyApplicationContextInitializer
+
